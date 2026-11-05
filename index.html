@@ -946,5 +946,803 @@ function addSpokenProducts(spoken) {
 
 
 // =====================================
-// பகுதி 4 இங்கே தொடரும்
+// 8. காய்கறிகளை பில்லில் சேர்த்தல்
+// =====================================
+
+function addToBill(product, quantity) {
+
+  let item = {
+    name: product.name,
+    type: product.type,
+    quantity: quantity,
+    price: Number(product.price)
+  };
+
+  bill.push(item);
+
+  renderBill();
+}
+
+
+// =====================================
+// 9. பில் பட்டியலைக் காட்டுதல்
+// =====================================
+
+function renderBill() {
+
+  let box = document.getElementById("billItems");
+
+  if (bill.length === 0) {
+    box.innerHTML =
+      '<p class="small-note">இன்னும் காய்கறிகள் சேர்க்கப்படவில்லை.</p>';
+    calculateChange();
+    return;
+  }
+
+  box.innerHTML = bill.map((item, i) => {
+
+    let unit = item.type === "kg" ? "கிலோ" : "எண்ணிக்கை";
+
+    let amount = item.quantity * item.price;
+
+    let quantityText = item.quantity + " " + unit;
+
+    return `
+      <div class="bill-item">
+
+        <strong>${escapeHTML(item.name)}</strong>
+
+        <p class="small-note">
+          ${quantityText} × ₹${item.price}
+        </p>
+
+        <div class="bill-item-row">
+
+          <div>
+            <label>அளவு</label>
+            <input
+              class="money-input"
+              type="number"
+              min="0.01"
+              step="0.25"
+              value="${item.quantity}"
+              onchange="updateBillItem(${i}, 'quantity', this.value)"
+            >
+          </div>
+
+          <div>
+            <label>ஒரு ${unit} விலை</label>
+            <input
+              class="money-input"
+              type="number"
+              min="0"
+              value="${item.price}"
+              onchange="updateBillItem(${i}, 'price', this.value)"
+            >
+          </div>
+
+        </div>
+
+        <div class="bill-item-row" style="margin-top:10px;">
+
+          <strong>தொகை: ₹${amount.toFixed(2)}</strong>
+
+          <button
+            class="delete-button"
+            onclick="removeBillItem(${i})"
+          >
+            🗑️ நீக்கு
+          </button>
+
+        </div>
+
+      </div>
+    `;
+
+  }).join("");
+
+  document.getElementById("totalAmount").textContent =
+    "₹" + getBillTotal().toFixed(2);
+
+  calculateChange();
+}
+
+
+// =====================================
+// 10. பில் அளவு / விலையைத் திருத்துதல்
+// =====================================
+
+function updateBillItem(index, field, value) {
+
+  let number = Number(value);
+
+  if (!Number.isFinite(number) || number <= 0) {
+    alert("சரியான அளவு அல்லது விலையை உள்ளிடுங்கள்.");
+    renderBill();
+    return;
+  }
+
+  bill[index][field] = number;
+
+  renderBill();
+}
+
+
+// =====================================
+// 11. பில் பொருளை நீக்குதல்
+// =====================================
+
+function removeBillItem(index) {
+
+  if (!confirm("இந்தக் காய்கறியை பில்லிலிருந்து நீக்க வேண்டுமா?")) {
+    return;
+  }
+
+  bill.splice(index, 1);
+
+  renderBill();
+}
+
+
+// =====================================
+// 12. மொத்தத் தொகை
+// =====================================
+
+function getBillTotal() {
+
+  return bill.reduce((total, item) => {
+    return total + (item.quantity * item.price);
+  }, 0);
+
+}
+
+
+// =====================================
+// 13. வாடிக்கையாளர் கொடுத்த பணம்
+// =====================================
+
+function startPaymentVoice() {
+
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    alert("குரல் வசதிக்கு Chrome உலாவியைப் பயன்படுத்துங்கள்.");
+    return;
+  }
+
+  let recognition = new SpeechRecognition();
+
+  recognition.lang = "ta-IN";
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  document.getElementById("paymentVoiceStatus").textContent =
+    "🎙️ பணத்தைக் கேட்கிறது...";
+
+  recognition.onresult = function(event) {
+
+    let spoken = event.results[0][0].transcript;
+
+    let amount = getSpokenMoney(spoken);
+
+    if (amount === null || amount < 0) {
+
+      document.getElementById("paymentVoiceStatus").textContent =
+        "பணத் தொகையைப் புரிந்துகொள்ள முடியவில்லை. மீண்டும் சொல்லுங்கள்.";
+
+      return;
+    }
+
+    document.getElementById("paidAmount").value = amount;
+
+    document.getElementById("paymentVoiceStatus").textContent =
+      "பதிவு செய்யப்பட்ட பணம்: ₹" + amount;
+
+    calculateChange();
+  };
+
+  recognition.onerror = function() {
+
+    document.getElementById("paymentVoiceStatus").textContent =
+      "குரலைப் பெற முடியவில்லை. மீண்டும் முயற்சிக்கவும்.";
+
+  };
+
+  recognition.start();
+}
+
+
+// =====================================
+// 14. குரலில் சொன்ன பணத்தை எண்ணாக மாற்றுதல்
+// =====================================
+
+function getSpokenMoney(text) {
+
+  text = text.toLowerCase();
+
+  // நேரடியாக எண்கள் வந்தால்
+  let digits = text.match(/\d+(?:[.,]\d+)?/);
+
+  if (digits) {
+    return Number(digits[0].replace(",", "."));
+  }
+
+  // தமிழ் எண்கள்
+  const tamilDigits = {
+    "௦": "0",
+    "௧": "1",
+    "௨": "2",
+    "௩": "3",
+    "௪": "4",
+    "௫": "5",
+    "௬": "6",
+    "௭": "7",
+    "௮": "8",
+    "௯": "9"
+  };
+
+  text = text.replace(/[௦-௯]/g, ch => tamilDigits[ch]);
+
+  digits = text.match(/\d+(?:[.,]\d+)?/);
+
+  if (digits) {
+    return Number(digits[0].replace(",", "."));
+  }
+
+  // பொதுவாகப் பேசப்படும் தொகைகள்
+  const amounts = [
+    ["ஐநூறு", 500],
+    ["ஐந்நூறு", 500],
+    ["நானூறு", 400],
+    ["முன்னூறு", 300],
+    ["இருநூறு", 200],
+    ["நூறு", 100],
+    ["ஐம்பது", 50],
+    ["நாற்பது", 40],
+    ["முப்பது", 30],
+    ["இருபது", 20],
+    ["பத்து", 10],
+    ["ஐந்து", 5],
+    ["ஆயிரம்", 1000]
+  ];
+
+  for (let item of amounts) {
+    if (text.includes(item[0])) {
+      return item[1];
+    }
+  }
+
+  return null;
+}
+
+
+// =====================================
+// 15. மீதிப் பணத்தைக் கணக்கிடுதல்
+// =====================================
+
+function calculateChange() {
+
+  let total = getBillTotal();
+
+  let paid = Number(
+    document.getElementById("paidAmount").value
+  );
+
+  let changeBox = document.getElementById("changeAmount");
+
+  let status = document.getElementById("changeStatus");
+
+  if (!Number.isFinite(paid) || paid <= 0) {
+
+    changeBox.textContent = "₹0";
+
+    status.textContent =
+      "வாடிக்கையாளர் கொடுத்த பணத்தை உள்ளிடுங்கள்.";
+
+    return;
+  }
+
+  let difference = paid - total;
+
+  if (difference > 0) {
+
+    changeBox.textContent =
+      "₹" + difference.toFixed(2);
+
+    status.textContent =
+      "வாடிக்கையாளருக்குத் திருப்பிக் கொடுக்க வேண்டிய மீதம்.";
+
+  } else if (difference === 0) {
+
+    changeBox.textContent = "₹0";
+
+    status.textContent =
+      "சரியான தொகை கொடுக்கப்பட்டுள்ளது.";
+
+  } else {
+
+    changeBox.textContent =
+      "₹" + Math.abs(difference).toFixed(2);
+
+    status.textContent =
+      "இன்னும் வாடிக்கையாளர் கொடுக்க வேண்டிய தொகை.";
+
+  }
+
+}
+
+
+// =====================================
+// =====================================
+// 16. பில் ரசீது உருவாக்குதல்
+// =====================================
+
+function buildReceipt(items, total, paid, change, date) {
+
+  let rows = items.map(item => {
+
+    let unit = item.type === "kg" ? "கிலோ" : "எண்ணிக்கை";
+
+    let amount = item.quantity * item.price;
+
+    return `
+      <tr>
+        <td>${escapeHTML(item.name)}</td>
+        <td>${item.quantity} ${unit}</td>
+        <td>₹${Number(item.price).toFixed(2)}</td>
+        <td>₹${amount.toFixed(2)}</td>
+      </tr>
+    `;
+
+  }).join("");
+
+  return `
+    <div style="text-align:center;">
+      <h2>சுதா காய்கறி கடை</h2>
+      <p>வாங்கியதற்கு நன்றி!</p>
+      <p>${escapeHTML(date)}</p>
+    </div>
+
+    <hr>
+
+    <table style="width:100%;border-collapse:collapse;font-size:12px;">
+      <thead>
+        <tr>
+          <th>பொருள்</th>
+          <th>அளவு</th>
+          <th>விலை</th>
+          <th>தொகை</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows}
+      </tbody>
+    </table>
+
+    <hr>
+
+    <h3>மொத்தம்: ₹${total.toFixed(2)}</h3>
+    <p>கொடுத்த பணம்: ₹${paid.toFixed(2)}</p>
+    <h3>மீதம்: ₹${change.toFixed(2)}</h3>
+
+    <hr>
+
+    <p style="text-align:center;">
+      மீண்டும் வருக!
+    </p>
+  `;
+}
+
+
+// =====================================
+// 17. பில் பிரிண்ட்
+// =====================================
+
+function printBill() {
+
+  if (bill.length === 0) {
+    alert("பிரிண்ட் செய்ய பில் இல்லை.");
+    return;
+  }
+
+  let total = getBillTotal();
+
+  let paid = Number(
+    document.getElementById("paidAmount").value
+  ) || 0;
+
+  let change = Math.max(0, paid - total);
+
+  let date = new Date().toLocaleString("ta-IN");
+
+  let receipt = document.getElementById("printReceipt");
+
+  if (!receipt) {
+
+    receipt = document.createElement("div");
+
+    receipt.id = "printReceipt";
+
+    document.body.appendChild(receipt);
+
+  }
+
+  receipt.innerHTML = buildReceipt(
+    bill,
+    total,
+    paid,
+    change,
+    date
+  );
+
+  let printStyle = document.getElementById("receiptPrintStyle");
+
+  if (!printStyle) {
+
+    printStyle = document.createElement("style");
+
+    printStyle.id = "receiptPrintStyle";
+
+    printStyle.textContent = `
+      @media print {
+
+        body * {
+          visibility: hidden !important;
+        }
+
+        #printReceipt,
+        #printReceipt * {
+          visibility: visible !important;
+        }
+
+        #printReceipt {
+          display: block !important;
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          padding: 5px;
+          color: black;
+          background: white;
+          font-family: Arial, sans-serif;
+        }
+
+        @page {
+          size: 58mm auto;
+          margin: 3mm;
+        }
+
+      }
+
+      #printReceipt {
+        display: none;
+      }
+    `;
+
+    document.head.appendChild(printStyle);
+
+  }
+
+  window.print();
+}
+
+
+// =====================================
+// 18. பில் முடிந்து புதிய பில் தொடங்குதல்
+// =====================================
+
+function finishBill() {
+
+  if (bill.length === 0) {
+
+    alert("முதலில் காய்கறிகளை பில்லில் சேர்க்கவும்.");
+
+    return;
+  }
+
+  let total = getBillTotal();
+
+  let paid = Number(
+    document.getElementById("paidAmount").value
+  ) || 0;
+
+  if (!confirm("இந்த பில்லை முடித்து புதிய பில் தொடங்கலாமா?")) {
+    return;
+  }
+
+  let billData = {
+
+    date: new Date().toISOString(),
+
+    items: bill.map(item => ({
+      name: item.name,
+      type: item.type,
+      quantity: item.quantity,
+      price: item.price
+    })),
+
+    total: total,
+
+    paid: paid,
+
+    change: paid - total
+
+  };
+
+  history.push(billData);
+
+  saveHistory();
+
+  bill = [];
+
+  document.getElementById("paidAmount").value = "";
+
+  document.getElementById("voiceText").value = "";
+
+  document.getElementById("voiceStatus").textContent =
+    "புதிய பில் தொடங்கத் தயாராக உள்ளது.";
+
+  document.getElementById("paymentVoiceStatus").textContent =
+    "புதிய வாடிக்கையாளரின் பணத்தைச் சொல்லுங்கள்.";
+
+  renderBill();
+
+  alert("பில் சேமிக்கப்பட்டது. புதிய பில் தொடங்கலாம்.");
+
+}
+
+
+// =====================================
+// 19. அன்றைய பில்கள் காட்டுதல்
+// =====================================
+
+function renderHistory() {
+
+  let box = document.getElementById("todayHistory");
+
+  if (!box) return;
+
+  let today = new Date().toDateString();
+
+  let todayBills = history.filter(item => {
+
+    return new Date(item.date).toDateString() === today;
+
+  });
+
+  if (todayBills.length === 0) {
+
+    box.innerHTML =
+      '<p class="small-note">இன்று இன்னும் பில்கள் இல்லை.</p>';
+
+    return;
+  }
+
+  box.innerHTML = todayBills.map((item, i) => {
+
+    let actualIndex = history.indexOf(item);
+
+    return `
+      <div class="bill-item">
+
+        <strong>பில் ${i + 1}</strong>
+
+        <p class="small-note">
+          ${new Date(item.date).toLocaleTimeString("ta-IN")}
+        </p>
+
+        <p>மொத்தம்: ₹${Number(item.total).toFixed(2)}</p>
+
+        <p>கொடுத்த பணம்: ₹${Number(item.paid).toFixed(2)}</p>
+
+        <p>மீதம்: ₹${Number(item.change).toFixed(2)}</p>
+
+        <button
+          onclick="showOldBill(${actualIndex})"
+          style="background:#2368a8;color:white;"
+        >
+          🖨️ பழைய பில் பார்க்க / பிரிண்ட்
+        </button>
+
+      </div>
+    `;
+
+  }).join("");
+
+}
+
+
+// =====================================
+// 20. பழைய பில்லை மீண்டும் பிரிண்ட் செய்தல்
+// =====================================
+
+function showOldBill(index) {
+
+  let item = history[index];
+
+  if (!item) return;
+
+  let receipt = document.getElementById("printReceipt");
+
+  if (!receipt) {
+
+    receipt = document.createElement("div");
+
+    receipt.id = "printReceipt";
+
+    document.body.appendChild(receipt);
+
+  }
+
+  receipt.innerHTML = buildReceipt(
+    item.items,
+    Number(item.total),
+    Number(item.paid),
+    Number(item.change),
+    new Date(item.date).toLocaleString("ta-IN")
+  );
+
+  let printStyle = document.getElementById("receiptPrintStyle");
+
+  if (!printStyle) {
+
+    // தற்போதைய பில் பிரிண்ட் செயல்பாட்டின்
+    // மூலம் பிரிண்ட் அமைப்பை உருவாக்குகிறோம்.
+    alert("முதலில் ஒரு புதிய பில்லை பிரிண்ட் செய்து அமைப்பைத் தொடங்குங்கள்.");
+
+    return;
+  }
+
+  window.print();
+
+}
+
+
+// =====================================
+// 21. Backup எடுக்கும் வசதி
+// =====================================
+
+function downloadBackup() {
+
+  let backup = {
+
+    products: products,
+
+    history: history,
+
+    backupDate: new Date().toISOString()
+
+  };
+
+  let file = new Blob(
+    [JSON.stringify(backup, null, 2)],
+    { type: "application/json" }
+  );
+
+  let url = URL.createObjectURL(file);
+
+  let link = document.createElement("a");
+
+  link.href = url;
+
+  link.download = "VOICE_KANAKKU_BACKUP.json";
+
+  link.click();
+
+  URL.revokeObjectURL(url);
+
+}
+
+
+// =====================================
+// 22. Backup மீட்டெடுக்கும் வசதி
+// =====================================
+
+function restoreBackup(event) {
+
+  let file = event.target.files[0];
+
+  if (!file) return;
+
+  if (!confirm("Backup கோப்பிலிருந்து தரவுகளை மீட்டெடுக்கவா?")) {
+
+    event.target.value = "";
+
+    return;
+  }
+
+  let reader = new FileReader();
+
+  reader.onload = function(e) {
+
+    try {
+
+      let data = JSON.parse(e.target.result);
+
+      if (
+        !Array.isArray(data.products) ||
+        !Array.isArray(data.history)
+      ) {
+
+        throw new Error("தவறான Backup கோப்பு");
+
+      }
+
+      if (!data.products.every(p =>
+        p &&
+        typeof p.name === "string" &&
+        (p.type === "kg" || p.type === "piece") &&
+        Number.isFinite(Number(p.price)) &&
+        Number(p.price) > 0
+      )) {
+
+        throw new Error("காய்கறி விவரங்கள் சரியாக இல்லை");
+
+      }
+
+      if (!data.history.every(item =>
+        item &&
+        Array.isArray(item.items) &&
+        Number.isFinite(Number(item.total)) &&
+        Number.isFinite(Number(item.paid)) &&
+        Number.isFinite(Number(item.change)) &&
+        !Number.isNaN(Date.parse(item.date))
+      )) {
+
+        throw new Error("பில் விவரங்கள் சரியாக இல்லை");
+
+      }
+
+      products = data.products;
+
+      history = data.history;
+
+      saveProducts();
+
+      saveHistory();
+
+      renderAdminProducts();
+
+      renderHistory();
+
+      alert("Backup வெற்றிகரமாக மீட்டெடுக்கப்பட்டது!");
+
+    } catch(error) {
+
+      alert("Backup கோப்பில் பிழை உள்ளது: " + error.message);
+
+    }
+
+    event.target.value = "";
+
+  };
+
+  reader.readAsText(file);
+
+}
+
+
+// =====================================
+// 23. செயலியைத் தொடங்குதல்
+// =====================================
+
+saveProducts();
+
+renderBill();
+
+renderAdminProducts();
+
+renderHistory();
+
+
+// =====================================
+// 24. கோப்பின் இறுதி
+// =====================================
+
+</script>
+
+</body>
+</html>
 // =====================================
