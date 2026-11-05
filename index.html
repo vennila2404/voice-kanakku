@@ -381,4 +381,570 @@ button {
 
 </main>
 
-<!-- பகுதி 2 இங்கே தொடரும் -->
+<!-- நிர்வாகப் பக்கம் -->
+
+<main id="adminPage" class="hidden">
+
+  <header class="app-header">
+    <div class="logo">⚙️🥕</div>
+    <h1>நிர்வாகம்</h1>
+    <p>காய்கறி விலை மற்றும் கடை விவரங்கள்</p>
+  </header>
+
+  <section class="card">
+
+    <button
+      onclick="showHome()"
+      style="background:#16834a;color:white;width:100%;"
+    >
+      ⬅️ முகப்புப் பக்கத்திற்குச் செல்ல
+    </button>
+
+  </section>
+
+  <!-- புதிய காய்கறி சேர்க்கும் பகுதி -->
+
+  <section class="card">
+
+    <h2>➕ புதிய காய்கறி சேர்க்க</h2>
+
+    <label for="newProductName">காய்கறியின் பெயர்</label>
+
+    <input
+      id="newProductName"
+      class="money-input"
+      type="text"
+      placeholder="உதாரணம்: வெண்டைக்காய்"
+    >
+
+    <p></p>
+
+    <label for="newProductType">காய்கறியின் வகை</label>
+
+    <select
+      id="newProductType"
+      class="money-input"
+    >
+      <option value="kg">கிலோ கணக்கு</option>
+      <option value="piece">எண்ணிக்கை கணக்கு</option>
+    </select>
+
+    <p></p>
+
+    <label for="newProductPrice">விலை (₹)</label>
+
+    <input
+      id="newProductPrice"
+      class="money-input"
+      type="number"
+      min="0"
+      placeholder="உதாரணம்: 60"
+    >
+
+    <p class="help-text">
+      கிலோ கணக்கில் தேர்வு செய்தால் ஒரு கிலோ விலையை உள்ளிடவும்.
+      எண்ணிக்கை கணக்கில் தேர்வு செய்தால் ஒரு காயின் விலையை உள்ளிடவும்.
+    </p>
+
+    <button
+      onclick="addProduct()"
+      style="background:#16834a;color:white;width:100%;"
+    >
+      ➕ காய்கறியைச் சேமிக்க
+    </button>
+
+  </section>
+
+  <!-- காய்கறி விலை பட்டியல் -->
+
+  <section class="card">
+
+    <h2>🥬 காய்கறி விலைப் பட்டியல்</h2>
+
+    <p class="help-text">
+      இங்கே காய்கறியின் விலையை மாற்றலாம்.
+      தேவையில்லாத காய்கறியை நீக்கவும் முடியும்.
+    </p>
+
+    <div id="adminProductList">
+
+      <p class="small-note">
+        காய்கறி பட்டியல் இங்கே வரும்.
+      </p>
+
+    </div>
+
+  </section>
+
+  <!-- அன்றைய பில்கள் -->
+
+  <section class="card">
+
+    <h2>🧾 அன்றைய பில்கள்</h2>
+
+    <p class="help-text">
+      இன்று போடப்பட்ட பில்கள் மற்றும் அவற்றின் தொகையை இங்கே பார்க்கலாம்.
+    </p>
+
+    <div id="todayHistory">
+
+      <p class="small-note">
+        இன்றைய பில்கள் இங்கே காணப்படும்.
+      </p>
+
+    </div>
+
+  </section>
+
+  <!-- Backup வசதி -->
+
+  <section class="card">
+
+    <h2>💾 தரவுகளைப் பாதுகாக்க</h2>
+
+    <p class="help-text">
+      காய்கறி விலைகள் மற்றும் பில் விவரங்களை
+      ஒரு கோப்பாகப் பாதுகாத்து வைக்கலாம்.
+    </p>
+
+    <button
+      onclick="downloadBackup()"
+      style="background:#2368a8;color:white;width:100%;"
+    >
+      ⬇️ Backup எடுக்க
+    </button>
+
+    <p></p>
+
+    <label for="backupFile">
+      Backup கோப்பை மீண்டும் பதிவேற்றவும்
+    </label>
+
+    <input
+      id="backupFile"
+      type="file"
+      accept=".json,application/json"
+      class="money-input"
+      onchange="restoreBackup(event)"
+    >
+
+    <p class="small-note">
+      கவனம்: Backup கோப்பை மீட்டெடுக்கும்போது
+      தற்போதைய தரவுகள் மாற்றப்படலாம்.
+    </p>
+
+  </section>
+
+</main>
+
+<script>
+
+// =====================================
+// 1. சேமிக்கப்பட்ட காய்கறி விவரங்கள்
+// =====================================
+
+const PRODUCT_KEY = "vk_products";
+const HISTORY_KEY = "vk_history";
+
+let defaultProducts = [
+  { name: "கத்திரிக்காய்", type: "kg", price: 120 },
+  { name: "உருளைக்கிழங்கு", type: "kg", price: 40 },
+  { name: "பீன்ஸ்", type: "kg", price: 120 },
+  { name: "கேரட்", type: "kg", price: 80 },
+  { name: "பீட்ரூட்", type: "kg", price: 40 },
+  { name: "தக்காளி", type: "kg", price: 60 },
+  { name: "மாங்காய்", type: "kg", price: 100 },
+  { name: "பூண்டு", type: "kg", price: 200 },
+  { name: "முட்டைகோஸ்", type: "piece", price: 40 },
+  { name: "சௌசக்காய்", type: "piece", price: 10 },
+  { name: "சின்ன வெங்காயம்", type: "kg", price: 80 },
+  { name: "பெரிய வெங்காயம்", type: "kg", price: 60 },
+  { name: "வெண்டைக்காய்", type: "kg", price: 60 },
+  { name: "முருங்கைக்காய்", type: "kg", price: 80 },
+  { name: "காலிஃபிளவர்", type: "piece", price: 30 }
+];
+
+let products = JSON.parse(
+  localStorage.getItem(PRODUCT_KEY) || "null"
+) || defaultProducts;
+
+let history = JSON.parse(
+  localStorage.getItem(HISTORY_KEY) || "[]"
+);
+
+let bill = [];
+
+function saveProducts() {
+  localStorage.setItem(
+    PRODUCT_KEY,
+    JSON.stringify(products)
+  );
+}
+
+function saveHistory() {
+  localStorage.setItem(
+    HISTORY_KEY,
+    JSON.stringify(history)
+  );
+}
+
+
+// =====================================
+// 2. முகப்பு / நிர்வாகப் பக்க மாற்றம்
+// =====================================
+
+function showAdmin() {
+  document.getElementById("homePage").classList.add("hidden");
+  document.getElementById("adminPage").classList.remove("hidden");
+  renderAdminProducts();
+  renderHistory();
+}
+
+function showHome() {
+  document.getElementById("adminPage").classList.add("hidden");
+  document.getElementById("homePage").classList.remove("hidden");
+}
+
+function changeFont(amount) {
+  let current = parseInt(
+    getComputedStyle(document.body).fontSize
+  );
+
+  let next = current + amount;
+
+  if (next < 14) next = 14;
+  if (next > 24) next = 24;
+
+  document.body.style.fontSize = next + "px";
+}
+
+
+// =====================================
+// 3. புதிய காய்கறி சேர்த்தல்
+// =====================================
+
+function addProduct() {
+
+  let name = document.getElementById("newProductName").value.trim();
+
+  let type = document.getElementById("newProductType").value;
+
+  let price = Number(
+    document.getElementById("newProductPrice").value
+  );
+
+  if (!name || price <= 0 || !Number.isFinite(price)) {
+    alert("காய்கறி பெயர் மற்றும் சரியான விலையை உள்ளிடுங்கள்.");
+    return;
+  }
+
+  let exists = products.some(
+    p => p.name === name
+  );
+
+  if (exists) {
+    alert("இந்தக் காய்கறி ஏற்கனவே பட்டியலில் உள்ளது.");
+    return;
+  }
+
+  products.push({
+    name: name,
+    type: type,
+    price: price
+  });
+
+  saveProducts();
+  renderAdminProducts();
+
+  document.getElementById("newProductName").value = "";
+  document.getElementById("newProductPrice").value = "";
+
+  alert("புதிய காய்கறி சேமிக்கப்பட்டது!");
+}
+
+
+// =====================================
+// 4. காய்கறி விலைப் பட்டியல்
+// =====================================
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, function(ch) {
+    return {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    }[ch];
+  });
+}
+
+function renderAdminProducts() {
+
+  let box = document.getElementById("adminProductList");
+
+  if (!box) return;
+
+  if (products.length === 0) {
+    box.innerHTML = "காய்கறிகள் எதுவும் இல்லை.";
+    return;
+  }
+
+  box.innerHTML = products.map((p, i) => `
+    <div class="bill-item">
+
+      <strong>${escapeHTML(p.name)}</strong>
+
+      <p class="small-note">
+        ${p.type === "kg" ? "ஒரு கிலோ விலை" : "ஒரு காய் விலை"}
+      </p>
+
+      <input
+        class="money-input"
+        type="number"
+        min="0"
+        value="${Number(p.price)}"
+        onchange="updateProductPrice(${i}, this.value)"
+      >
+
+      <button
+        class="delete-button"
+        onclick="deleteProduct(${i})"
+      >
+        🗑️ நீக்கு
+      </button>
+
+    </div>
+  `).join("");
+}
+
+function updateProductPrice(index, value) {
+
+  let price = Number(value);
+
+  if (!Number.isFinite(price) || price <= 0) {
+    alert("சரியான விலையை உள்ளிடுங்கள்.");
+    renderAdminProducts();
+    return;
+  }
+
+  products[index].price = price;
+
+  saveProducts();
+  renderAdminProducts();
+
+  alert("விலை மாற்றம் சேமிக்கப்பட்டது.");
+}
+
+function deleteProduct(index) {
+
+  let ok = confirm(
+    products[index].name + " நீக்க வேண்டுமா?"
+  );
+
+  if (!ok) return;
+
+  products.splice(index, 1);
+
+  saveProducts();
+  renderAdminProducts();
+}
+
+
+// =====================================
+// 5. தமிழ் அளவைப் புரிந்துகொள்ளுதல்
+// =====================================
+
+function getTamilQuantity(text, type) {
+
+  text = text.toLowerCase();
+
+  if (
+    text.includes("முக்கால்") ||
+    text.includes("மூன்று கால்")
+  ) {
+    return 0.75;
+  }
+
+  if (
+    text.includes("அரை") ||
+    text.includes("அரைக்கிலோ")
+  ) {
+    return 0.5;
+  }
+
+  if (
+    text.includes("கால்") ||
+    text.includes("கால் கிலோ")
+  ) {
+    return 0.25;
+  }
+
+  if (
+    /0\.25|0,25/.test(text)
+  ) {
+    return 0.25;
+  }
+
+  if (
+    /0\.5|0,5/.test(text)
+  ) {
+    return 0.5;
+  }
+
+  if (
+    /0\.75|0,75/.test(text)
+  ) {
+    return 0.75;
+  }
+
+  if (
+    /மூன்று கிலோ|3 கிலோ/.test(text)
+  ) {
+    return 3;
+  }
+
+  if (
+    /இரண்டு கிலோ|ரெண்டு கிலோ|2 கிலோ/.test(text)
+  ) {
+    return 2;
+  }
+
+  if (
+    /ஒரு கிலோ|1 கிலோ/.test(text)
+  ) {
+    return 1;
+  }
+
+  if (type === "piece") {
+
+    if (/மூன்று|மூணு|3/.test(text)) return 3;
+
+    if (/இரண்டு|ரெண்டு|2/.test(text)) return 2;
+
+    if (/ஒரு|ஒன்று|1/.test(text)) return 1;
+  }
+
+  return 1;
+}
+
+
+// =====================================
+// 6. குரல் மூலம் காய்கறி சேர்த்தல்
+// =====================================
+
+function startVoice() {
+
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    alert("குரல் வசதிக்கு Chrome உலாவியைப் பயன்படுத்துங்கள்.");
+    return;
+  }
+
+  let recognition = new SpeechRecognition();
+
+  recognition.lang = "ta-IN";
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  document.getElementById("voiceStatus").textContent =
+    "🎙️ கேட்கிறது... பேசுங்கள்";
+
+  recognition.onresult = function(event) {
+
+    let spoken = event.results[0][0].transcript;
+
+    document.getElementById("voiceText").value = spoken;
+
+    document.getElementById("voiceStatus").textContent =
+      "குரல் பெறப்பட்டது.";
+
+    addSpokenProducts(spoken);
+  };
+
+  recognition.onerror = function() {
+    document.getElementById("voiceStatus").textContent =
+      "குரலைப் பெற முடியவில்லை. மீண்டும் முயற்சிக்கவும்.";
+  };
+
+  recognition.onend = function() {
+    if (
+      document.getElementById("voiceStatus").textContent.includes("கேட்கிறது")
+    ) {
+      document.getElementById("voiceStatus").textContent =
+        "பேசத் தயாராக உள்ளது";
+    }
+  };
+
+  recognition.start();
+}
+
+
+// =====================================
+// 7. பேசிய காய்கறிகளைப் பிரித்தல்
+// =====================================
+
+function addSpokenProducts(spoken) {
+
+  let text = spoken.replace(/[.,]/g, " ");
+
+  let matches = [];
+
+  products.forEach(product => {
+
+    let position = 0;
+
+    while (true) {
+
+      let index = text.indexOf(product.name, position);
+
+      if (index === -1) break;
+
+      matches.push({
+        product: product,
+        start: index,
+        end: index + product.name.length
+      });
+
+      position = index + product.name.length;
+    }
+
+  });
+
+  matches.sort((a, b) => a.start - b.start);
+
+  if (matches.length === 0) {
+    alert("காய்கறி பெயர் புரியவில்லை. நிர்வாகப் பட்டியலில் உள்ள பெயரைச் சொல்லுங்கள்.");
+    return;
+  }
+
+  matches.forEach((match, i) => {
+
+    let previousEnd = i === 0 ? 0 : matches[i - 1].end;
+
+    let nextStart = i === matches.length - 1
+      ? text.length
+      : matches[i + 1].start;
+
+    let nearbyText = text.substring(previousEnd, nextStart);
+
+    let quantity = getTamilQuantity(
+      nearbyText,
+      match.product.type
+    );
+
+    addToBill(match.product, quantity);
+
+  });
+
+  document.getElementById("voiceStatus").textContent =
+    "✅ காய்கறிகள் பில்லில் சேர்க்கப்பட்டன.";
+}
+
+
+// =====================================
+// பகுதி 4 இங்கே தொடரும்
+// =====================================
