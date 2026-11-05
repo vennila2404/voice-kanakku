@@ -1,189 +1,131 @@
+
 <!DOCTYPE html>
 <html lang="ta">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#176b45">
-
-<title>VOICE KANAKKU</title>
+<meta name="theme-color" content="#176b3a">
+<title>VOICE KANAKKU - அம்மா கடை</title>
 
 <style>
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+body{
+  margin:0;
+  padding:12px;
+  background:#f1f8f2;
+  color:#183322;
+  font-family:Arial,sans-serif;
 }
-
-body {
-  margin: 0;
-  background: #f2f7f3;
-  color: #183126;
-  font-family: sans-serif;
-  font-size: 17px;
+header{
+  background:#176b3a;
+  color:white;
+  text-align:center;
+  padding:18px 10px;
+  border-radius:14px;
+  margin-bottom:14px;
 }
-
-header {
-  background: #176b45;
-  color: white;
-  text-align: center;
-  padding: 20px 12px;
+header h1{margin:0;font-size:24px}
+header p{margin:7px 0 0}
+nav{
+  display:flex;
+  gap:8px;
+  margin-bottom:14px;
 }
-
-header h1 {
-  margin: 0;
-  font-size: 27px;
+button{
+  border:0;
+  border-radius:9px;
+  padding:12px;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
 }
-
-header p {
-  margin: 7px 0 0;
+nav button{flex:1;background:#d8eadc;color:#14552e}
+nav button.active{background:#176b3a;color:white}
+.card{
+  background:white;
+  padding:15px;
+  margin-bottom:13px;
+  border-radius:13px;
+  box-shadow:0 2px 7px #00000010;
 }
-
-main {
-  max-width: 720px;
-  margin: auto;
-  padding: 14px;
+h2{font-size:19px;margin:0 0 12px}
+input,select{
+  width:100%;
+  padding:12px;
+  margin:5px 0 10px;
+  border:1px solid #b9cdbd;
+  border-radius:8px;
+  font-size:16px;
+  background:white;
 }
-
-.card {
-  background: white;
-  border-radius: 15px;
-  padding: 16px;
-  margin: 13px 0;
-  box-shadow: 0 2px 8px #00000010;
+.primary{background:#176b3a;color:white;width:100%}
+.voice{background:#7139a8;color:white;width:100%;font-size:18px}
+.blue{background:#245b9e;color:white;width:100%}
+.danger{background:#b83232;color:white}
+.gray{background:#e5e9e6;color:#24372a}
+.small{padding:8px 10px;font-size:13px}
+.row{display:flex;gap:8px;align-items:center}
+.row>*{flex:1;min-width:0}
+.item{
+  border-bottom:1px solid #e4e9e5;
+  padding:10px 0;
 }
-
-h2 {
-  color: #176b45;
-  font-size: 21px;
+.item:last-child{border-bottom:0}
+.itemline{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  align-items:center;
 }
-
-button {
-  border: 0;
-  border-radius: 10px;
-  padding: 13px;
-  font-size: 17px;
-  font-weight: bold;
-  cursor: pointer;
+.itemname{font-weight:bold}
+.muted{color:#66776b;font-size:13px}
+.totalbox{
+  background:#e2f4e6;
+  padding:15px;
+  border-radius:10px;
+  text-align:center;
+  margin-top:10px;
 }
-
-.primary {
-  background: #176b45;
-  color: white;
+.totalbox strong{font-size:25px;color:#14552e}
+#voiceStatus,#paymentStatus{
+  text-align:center;
+  color:#176b3a;
+  margin:9px 0;
+  font-size:14px;
 }
-
-.secondary {
-  background: #e5f2e9;
-  color: #145b39;
+#voiceText{
+  background:#f4f4f4;
+  border-radius:8px;
+  padding:10px;
+  min-height:35px;
+  font-size:14px;
 }
-
-.voice {
-  background: #7041a6;
-  color: white;
-  width: 100%;
-  font-size: 20px;
-  padding: 17px;
+.hidden{display:none!important}
+.price{font-weight:bold;color:#176b3a}
+.qtybuttons{
+  display:flex;
+  gap:6px;
+  margin:7px 0;
 }
-
-.danger {
-  background: #fee9e7;
-  color: #b42318;
-}
-
-input, select {
-  width: 100%;
-  padding: 13px;
-  border: 1px solid #ccc;
-  border-radius: 9px;
-  font-size: 17px;
-  margin: 7px 0 12px;
-}
-
-label {
-  display: block;
-  font-weight: bold;
-}
-
-.row {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.row > * {
-  flex: 1;
-  min-width: 0;
-}
-
-.status {
-  background: #f4f0fb;
-  padding: 12px;
-  border-radius: 10px;
-  margin-top: 10px;
-  overflow-wrap: anywhere;
-}
-
-.amount {
-  font-size: 30px;
-  font-weight: bold;
-  color: #176b45;
-}
-
-.changebox {
-  background: #e5f7e9;
-  border: 2px solid #8ac99d;
-  border-radius: 15px;
-  padding: 17px;
-  text-align: center;
-  margin-top: 12px;
-}
-
-.hidden {
-  display: none !important;
-}
-
-.muted {
-  color: #64756b;
-  font-size: 14px;
-}
-
-.big-text {
-  font-size: 22px;
-}
-
-.big-text button,
-.big-text input,
-.big-text select {
-  font-size: 21px;
-}
-
-.billrow,
-.productrow,
-.historyrow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  border-bottom: 1px solid #eee;
-  padding: 12px 0;
-}
-
-.small {
-  padding: 8px 10px;
-  font-size: 14px;
-}
-
-footer {
-  text-align: center;
-  padding: 18px;
-  color: #718078;
-}
-
-@media(max-width: 420px) {
-  .row {
-    gap: 7px;
+.qtybuttons button{flex:1;background:#e2f0e5;color:#176b3a}
+footer{text-align:center;color:#758278;font-size:12px;padding:15px}
+@media print{
+  body{padding:0;background:white}
+  body *{visibility:hidden!important}
+  #receipt,#receipt *{visibility:visible!important}
+  #receipt{
+    display:block!important;
+    position:absolute;
+    left:0;
+    top:0;
+    width:52mm;
+    padding:2mm;
+    color:#000;
+    background:white;
+    font-family:Arial,sans-serif;
+    font-size:11px;
   }
-
-  button {
-    font-size: 15px;
-  }
+  @page{size:58mm auto;margin:2mm}
 }
 </style>
 </head>
@@ -191,681 +133,620 @@ footer {
 <body>
 
 <header>
-  <h1>🛒 VOICE KANAKKU</h1>
-  <p>பேசுங்கள்… பில் தானாக வரும்!</p>
+  <h1>🌿 VOICE KANAKKU</h1>
+  <p>அம்மா காய்கறி கடை பில்லிங்</p>
 </header>
 
-<!-- அம்மாவுக்கான பில்லிங் பக்கம் -->
+<nav>
+  <button id="billTab" class="active" onclick="showPage('billingPage',this)">🧾 பில்லிங்</button>
+  <button id="adminTab" onclick="showPage('adminPage',this)">⚙️ நிர்வாகம்</button>
+  <button id="historyTab" onclick="showPage('historyPage',this)">📚 வரலாறு</button>
+</nav>
 
-<main id="billingPage">
+<!-- BILLING PAGE -->
+<section id="billingPage">
 
-  <div class="row">
-    <button class="secondary" onclick="showAdmin()">
-      ⚙️ நிர்வாகம்
-    </button>
-
-    <button class="secondary" onclick="toggleLarge()">
-      🔎 எழுத்து அளவு
-    </button>
+  <div class="card">
+    <h2>🎙️ குரல் மூலம் பொருட்களைச் சேர்க்கவும்</h2>
+    <button class="voice" onclick="startProductVoice()">🎙️ பேசத் தொடங்கு</button>
+    <p id="voiceStatus">பேசத் தயாராக உள்ளது</p>
+    <div id="voiceText">நீங்கள் பேசியது இங்கே வரும்.</div>
+    <p class="muted">
+      எடுத்துக்காட்டு: அரை கிலோ தக்காளி, கால் கிலோ கேரட்,
+      ஒரு கிலோ உருளைக்கிழங்கு
+    </p>
   </div>
 
-  <section class="card">
-    <h2>🎙️ குரலில் காய்கறிகளைச் சேர்க்க</h2>
+  <div class="card">
+    <h2>➕ கைமுறையாகப் பொருள் சேர்க்கவும்</h2>
 
-    <button class="voice" onclick="startProductVoice()">
-      🎙️ பேசத் தொடங்கு
-    </button>
+    <label>பொருள்</label>
+    <select id="manualProduct"></select>
 
-    <div id="voiceStatus" class="status">
-      பேசத் தயாராக உள்ளது.
+    <label>அளவு</label>
+    <input id="manualQty" type="number" min="0.01" step="0.01" value="1">
+
+    <div class="qtybuttons">
+      <button onclick="setManualQty(0.25)">¼ கிலோ</button>
+      <button onclick="setManualQty(0.5)">½ கிலோ</button>
+      <button onclick="setManualQty(0.75)">¾ கிலோ</button>
+      <button onclick="setManualQty(1)">1 கிலோ</button>
     </div>
 
-    <p class="muted">
-      உதாரணம்: அரை கிலோ தக்காளி.
-      இரண்டு முட்டைகோஸ்.
-      இரண்டு காலிஃபிளவர்.
-    </p>
+    <button class="primary" onclick="addManual()">பொருளைச் சேர்க்கவும்</button>
+  </div>
 
-    <label>காய்கறியைத் தேர்வு செய்யவும்</label>
-    <select id="manualProduct">
-      <option value="">காய்கறியைத் தேர்வு செய்யவும்</option>
-    </select>
-
-    <label>அளவு / எண்ணிக்கை</label>
-    <div class="row">
-      <input
-        id="manualQty"
-        type="number"
-        min="0.01"
-        step="0.01"
-        value="1"
-      >
-
-      <button class="primary" onclick="addManual()">
-        பொருள் சேர்
-      </button>
-    </div>
-  </section>
-
-  <section class="card">
-    <h2>🧾 இன்றைய பில்</h2>
-
+  <div class="card">
+    <h2>🛒 பில் பொருட்கள்</h2>
     <div id="billItems">
       <p class="muted">இன்னும் பொருட்கள் சேர்க்கப்படவில்லை.</p>
     </div>
 
-    <div class="row">
-      <strong>மொத்தம்</strong>
-      <div class="amount" id="total">₹0.00</div>
+    <div class="totalbox">
+      <div>மொத்தத் தொகை</div>
+      <strong id="total">₹0.00</strong>
     </div>
-  </section>
+  </div>
 
-  <section class="card">
-    <button
-      class="danger"
-      style="width:100%"
-      onclick="cancelCurrentBill()"
-    >
-      ✖ இந்தப் பில்லை ரத்து செய்
-    </button>
-  </section>
+  <div class="card">
+    <h2>💵 பணம் கணக்கு</h2>
 
-  <section class="card">
-    <h2>💵 வாடிக்கையாளர் கொடுத்த பணம்</h2>
+    <label>வாடிக்கையாளர் கொடுத்த பணம்</label>
+    <input id="paidInput" type="number" min="0" step="0.01"
+      placeholder="உதாரணம்: 500" oninput="calculateChange()">
 
-    <button class="voice" onclick="startPaymentVoice()">
-      🎙️ பணத்தைப் பேசுங்கள்
-    </button>
+    <button class="voice" onclick="startPaymentVoice()">🎙️ பணத்தைப் பேசவும்</button>
+    <p id="paymentStatus">கொடுத்த பணத்தை உள்ளிடவும்.</p>
 
-    <div id="paymentStatus" class="status">
-      பணத்தைப் பேசுங்கள் அல்லது தொகையை உள்ளிடுங்கள்.
+    <div class="totalbox">
+      <div id="changeLabel">மீதி கொடுக்க வேண்டிய தொகை</div>
+      <strong id="changeAmount">₹0.00</strong>
     </div>
+  </div>
 
-    <label>வாடிக்கையாளர் கொடுத்த தொகை</label>
-    <input
-      id="paidInput"
-      type="number"
-      min="0"
-      placeholder="உதாரணம்: 500"
-    >
+  <div class="card">
+    <button class="blue" onclick="printBill()">🖨️ பில் பிரிண்ட் எடுக்க</button>
+    <p class="muted">பிரிண்ட் எடுக்கும் முன் பில் விவரங்களைச் சரிபார்க்கவும்.</p>
+    <button class="primary" onclick="finishBill()">✅ முடிந்தது - புதிய பில்</button>
+    <button class="danger" style="width:100%;margin-top:9px" onclick="cancelCurrentBill()">பில் ரத்து செய்யவும்</button>
+  </div>
 
-    <div class="changebox">
-      <div id="changeLabel">
-        திருப்பிக் கொடுக்க வேண்டிய மீதி
-      </div>
+</section>
 
-      <div class="amount" id="changeAmount">
-        ₹0.00
-      </div>
-    </div>
-  </section>
+<!-- ADMIN PAGE -->
+<section id="adminPage" class="hidden">
 
-  <button
-    class="primary"
-    style="width:100%;padding:17px"
-    onclick="finishBill()"
-  >
-    ✅ முடிந்தது - புதிய பில்
-  </button>
+  <div class="card">
+    <h2>➕ புதிய காய்கறி சேர்க்கவும்</h2>
 
-</main>
+    <label>பொருளின் பெயர்</label>
+    <input id="pName" placeholder="உதாரணம்: வெண்டைக்காய்">
 
-<!-- நிர்வாகப் பக்கம் -->
-
-<main id="adminPage" class="hidden">
-
-  <button class="secondary" onclick="showBilling()">
-    ← பில்லிங் பக்கம்
-  </button>
-<button class="secondary" onclick="downloadBackup()">
-  📥 Backup சேமிக்க
-</button>
-  <section class="card">
-    <h2>⚙️ புதிய காய்கறியைச் சேர்க்க</h2>
-
-    <input type="hidden" id="editId">
-
-    <label>காய்கறியின் பெயர்</label>
-    <input
-      id="pName"
-      type="text"
-      placeholder="உதாரணம்: காலிஃபிளவர்"
-    >
-
-    <label>காய்கறி வகை</label>
+    <label>பொருள் வகை</label>
     <select id="pType">
       <option value="kg">கிலோ கணக்கு</option>
       <option value="piece">எண்ணிக்கை கணக்கு</option>
     </select>
 
-    <label id="priceLabel">ஒரு கிலோ விலை (₹)</label>
-    <input
-      id="pPrice"
-      type="number"
-      min="0"
-      placeholder="விலையை உள்ளிடவும்"
-    >
+    <label>விலை (₹)</label>
+    <input id="pPrice" type="number" min="0" placeholder="விலை">
 
-    <div class="row">
-      <button class="primary" onclick="saveProduct()">
-        💾 பொருள் சேமி
-      </button>
+    <input id="editId" type="hidden" value="">
 
-      <button class="secondary" onclick="clearProductForm()">
-        புதியதாக உள்ளிடு
-      </button>
-    </div>
-  </section>
+    <button class="primary" onclick="saveProduct()">பொருளைச் சேமிக்கவும்</button>
+    <button class="gray" style="width:100%;margin-top:7px" onclick="clearProductForm()">புதிய பொருள்</button>
+  </div>
 
-  <section class="card">
-    <h2>📋 சேமித்த காய்கறிகள்</h2>
-    <div id="productList">
-      <p class="muted">சேமித்த காய்கறிகள் இங்கே வரும்.</p>
-    </div>
-  </section>
+  <div class="card">
+    <h2>🥕 தினசரி விலை மாற்றம்</h2>
+    <p class="muted">திருத்து என்பதை அழுத்தி இன்றைய விலையை மாற்றிச் சேமிக்கவும்.</p>
+    <div id="productList"></div>
+  </div>
 
-  <section class="card">
+  <div class="card">
+    <h2>💾 தரவு காப்புப் பிரதி</h2>
+    <button class="blue" onclick="downloadBackup()">காப்புப் பிரதி பதிவிறக்கம்</button>
+    <p class="muted">முன்பு எடுத்த JSON காப்புப் பிரதியை மீட்டெடுக்கலாம்.</p>
+    <input type="file" id="backupFile" accept=".json,application/json">
+    <button class="primary" onclick="restoreBackup()">காப்புப் பிரதியை மீட்டெடுக்கவும்</button>
+  </div>
+
+  <div class="card">
+    <h2>🔠 எழுத்து அளவு</h2>
+    <button class="gray" onclick="changeTextSize(1)">எழுத்தை பெரிதாக்கு +</button>
+    <button class="gray" onclick="changeTextSize(-1)">எழுத்தை சிறிதாக்கு -</button>
+  </div>
+
+</section>
+
+<!-- HISTORY PAGE -->
+<section id="historyPage" class="hidden">
+  <div class="card">
     <h2>📚 பழைய பில்கள்</h2>
-    <div id="historyList">
-      <p class="muted">பழைய பில்கள் இங்கே வரும்.</p>
-    </div>
-  </section>
+    <div id="historyList"></div>
+  </div>
+</section>
 
-</main>
+<!-- PRINT RECEIPT -->
+<div id="receipt" class="hidden"></div>
 
-<footer>
-  VOICE KANAKKU
-</footer>
+<footer>VOICE KANAKKU · அம்மா கடை</footer>
+
 <script>
-let products = JSON.parse(localStorage.getItem("vk_products")) || [
- {name:"கத்திரிக்காய்",type:"kg",price:120},
- {name:"உருளைக்கிழங்கு",type:"kg",price:40},
- {name:"பீன்ஸ்",type:"kg",price:120},
- {name:"கேரட்",type:"kg",price:80},
- {name:"பீட்ரூட்",type:"kg",price:40},
- {name:"தக்காளி",type:"kg",price:60},
- {name:"மாங்காய்",type:"kg",price:100},
- {name:"பூண்டு",type:"kg",price:200},
- {name:"முட்டைகோஸ்",type:"piece",price:40},
- {name:"சௌசக்காய்",type:"piece",price:10},
- {name:"சின்ன வெங்காயம்",type:"kg",price:80},
- {name:"பெரிய வெங்காயம்",type:"kg",price:60},
- {name:"வெண்டைக்காய்",type:"kg",price:60},
- {name:"முருங்கைக்காய்",type:"kg",price:80},
- {name:"காலிஃபிளவர்",type:"piece",price:30}
-];
+"use strict";
 
+/* சேமிப்பு பெயர்கள் - பழைய தரவுகளைப் பாதுகாக்க */
+let products = [];
 let bill = [];
 let history = [];
 
-function saveProducts() {
- localStorage.setItem("vk_products", JSON.stringify(products));
+const PRODUCT_KEY = "vk_products";
+const HISTORY_KEY = "vk_history";
+const TEXT_KEY = "vk_large_text";
+
+/* ஆரம்பப் பொருட்கள் */
+const defaultProducts = [
+  {name:"கத்திரிக்காய்",type:"kg",price:120},
+  {name:"உருளைக்கிழங்கு",type:"kg",price:40},
+  {name:"பீன்ஸ்",type:"kg",price:120},
+  {name:"கேரட்",type:"kg",price:80},
+  {name:"பீட்ரூட்",type:"kg",price:40},
+  {name:"தக்காளி",type:"kg",price:60},
+  {name:"மாங்காய்",type:"kg",price:100},
+  {name:"பூண்டு",type:"kg",price:200},
+  {name:"முட்டைகோஸ்",type:"piece",price:40},
+  {name:"சௌசக்காய்",type:"piece",price:10},
+  {name:"சின்ன வெங்காயம்",type:"kg",price:80},
+  {name:"பெரிய வெங்காயம்",type:"kg",price:60},
+  {name:"வெண்டைக்காய்",type:"kg",price:60},
+  {name:"முருங்கைக்காய்",type:"kg",price:80},
+  {name:"காலிஃபிளவர்",type:"piece",price:30}
+];
+
+function loadData(){
+  try{
+    const savedProducts = localStorage.getItem(PRODUCT_KEY);
+    const savedHistory = localStorage.getItem(HISTORY_KEY);
+
+    products = savedProducts ? JSON.parse(savedProducts) : defaultProducts;
+    history = savedHistory ? JSON.parse(savedHistory) : [];
+
+    if(!Array.isArray(products)) products = defaultProducts;
+    if(!Array.isArray(history)) history = [];
+
+  }catch(error){
+    products = defaultProducts;
+    history = [];
+  }
+
+  saveProducts();
+  renderProducts();
+  renderManualProducts();
+  renderHistory();
+
+  const size = Number(localStorage.getItem(TEXT_KEY)) || 16;
+  document.body.style.fontSize = size + "px";
 }
 
-function showAdmin() {
- document.getElementById("billingPage").classList.add("hidden");
- document.getElementById("adminPage").classList.remove("hidden");
- renderProducts();
- renderHistory();
+function saveProducts(){
+  localStorage.setItem(PRODUCT_KEY,JSON.stringify(products));
 }
 
-function showBilling() {
- document.getElementById("adminPage").classList.add("hidden");
- document.getElementById("billingPage").classList.remove("hidden");
- renderManualProducts();
+function saveHistory(){
+  localStorage.setItem(HISTORY_KEY,JSON.stringify(history));
 }
 
-function toggleLarge() {
- document.body.classList.toggle("big-text");
- localStorage.setItem(
-  "vk_large_text",
-  document.body.classList.contains("big-text") ? "yes" : "no"
- );
-}
-
-function saveProduct() {
- const name = document.getElementById("pName").value.trim();
- const type = document.getElementById("pType").value;
- const price = Number(document.getElementById("pPrice").value);
- const editId = document.getElementById("editId").value;
-
- if (!name || price <= 0 || !Number.isFinite(price)) {
-  alert("காய்கறி பெயர் மற்றும் சரியான விலையை உள்ளிடுங்கள்");
-  return;
- }
-
- if (editId !== "") {
-  products[Number(editId)] = {name, type, price};
- } else {
-  products.push({name, type, price});
- }
-
- saveProducts();
- clearProductForm();
- renderProducts();
- renderManualProducts();
- alert("விலை சேமிக்கப்பட்டது");
-}
-
-function clearProductForm() {
- document.getElementById("editId").value = "";
- document.getElementById("pName").value = "";
- document.getElementById("pType").value = "kg";
- document.getElementById("pPrice").value = "";
- document.getElementById("priceLabel").innerText = "விலை (₹)";
-}
-
-function editProduct(index) {
- const p = products[index];
- document.getElementById("editId").value = index;
- document.getElementById("pName").value = p.name;
- document.getElementById("pType").value = p.type;
- document.getElementById("pPrice").value = p.price;
- document.getElementById("priceLabel").innerText =
-  p.type === "kg" ? "ஒரு கிலோ விலை (₹)" : "ஒரு எண்ணிக்கை விலை (₹)";
-}
-
-function deleteProduct(index) {
- if (!confirm("இந்தப் பொருளை நீக்க வேண்டுமா?")) return;
- products.splice(index, 1);
- saveProducts();
- renderProducts();
- renderManualProducts();
-}
-
-function renderProducts() {
- const area = document.getElementById("productList");
- area.innerHTML = "";
-
- products.forEach((p, i) => {
-  const row = document.createElement("div");
-  row.className = "productrow";
-  row.innerHTML =
-   "<span>" + p.name + " - ₹" + p.price +
-   (p.type === "kg" ? " / கிலோ" : " / ஒன்று") + "</span>" +
-   '<button onclick="editProduct(' + i + ')">திருத்து</button>' +
-   '<button onclick="deleteProduct(' + i + ')">நீக்கு</button>';
-  area.appendChild(row);
- });
-}
-
-function renderManualProducts() {
- const select = document.getElementById("manualProduct");
- select.innerHTML = '<option value="">பொருளைத் தேர்வு செய்யவும்</option>';
-
- products.forEach((p, i) => {
-  const option = document.createElement("option");
-  option.value = i;
-  option.textContent = p.name + " - ₹" + p.price +
-   (p.type === "kg" ? " / கிலோ" : " / ஒன்று");
-  select.appendChild(option);
- });
-}
-
-   </script>
-   <script>
-
-// கையால் பொருள் சேர்த்தல்
-function addManual() {
- const select = document.getElementById("manualProduct");
- const qtyInput = document.getElementById("manualQty");
-
- if (select.value === "") {
-  alert("முதலில் பொருளைத் தேர்வு செய்யவும்");
-  return;
- }
-
- const index = Number(select.value);
- const qty = Number(qtyInput.value);
- const p = products[index];
-
- if (!qty || qty <= 0) {
-  alert("சரியான அளவை உள்ளிடவும்");
-  return;
- }
-
- bill.push({
-  name: p.name,
-  type: p.type,
-  qty: qty,
-  price: p.price
- });
-
- qtyInput.value = "";
- select.value = "";
- renderBill();
-}
-
-// குரல் மூலம் பொருள் சேர்த்தல்
-function startProductVoice() {
- const Speech =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
-
- if (!Speech) {
-  alert("Chrome உலாவியில் திறந்து முயற்சி செய்யுங்கள்");
-  return;
- }
-
- const recognition = new Speech();
- recognition.lang = "ta-IN";
- recognition.continuous = false;
- recognition.interimResults = false;
-
- document.getElementById("voiceStatus").innerText =
-  "கேட்டுக்கொண்டிருக்கிறது...";
-
- recognition.onresult = function(event) {
-  const spoken = event.results[0][0].transcript;
-  document.getElementById("voiceStatus").innerText =
-   "நீங்கள் சொன்னது: " + spoken;
-
-  addSpokenProducts(spoken);
- };
-
- recognition.onerror = function() {
-  document.getElementById("voiceStatus").innerText =
-   "மீண்டும் முயற்சி செய்யுங்கள்";
- };
-
- recognition.onend = function() {
-  document.getElementById("voiceStatus").innerText =
-   "பேசத் தயாராக உள்ளது";
- };
-
- recognition.start();
-}
-
-// தமிழ் அளவுகளைப் புரிந்துகொள்ளுதல்
-function getTamilQuantity(text, type) {
- if (type === "piece") {
-  if (text.includes("மூன்று") || text.includes("மூணு")) return 3;
-  if (text.includes("இரண்டு") || text.includes("ரெண்டு")) return 2;
-  if (text.includes("நான்கு") || text.includes("நாலு")) return 4;
-  if (text.includes("ஐந்து") || text.includes("அஞ்சு")) return 5;
-  return 1;
- }
-
- if (text.includes("முக்கால்")) return 0.75;
- if (text.includes("அரை") || text.includes("பாதி")) return 0.5;
- if (text.includes("கால்")) return 0.25;
-
- if (text.includes("மூன்று") || text.includes("மூணு")) return 3;
- if (text.includes("இரண்டு") || text.includes("ரெண்டு")) return 2;
- if (text.includes("ஒன்றரை")) return 1.5;
-
- return 1;
-}
-
-// குரலில் சொன்ன பொருட்களைப் பிரித்தல்
-function addSpokenProducts(spoken) {
- const text = spoken.replace(/\s+/g, " ").trim();
- let found = 0;
-
- products.forEach(function(p) {
-  const position = text.indexOf(p.name);
-
-  if (position === -1) return;
-
-  const before = text.substring(
-   Math.max(0, position - 25), position
-  );
-
-  const qty = getTamilQuantity(before, p.type);
-
-  bill.push({
-   name: p.name,
-   type: p.type,
-   qty: qty,
-   price: p.price
+/* பக்க மாற்றம் */
+function showPage(pageId,button){
+  ["billingPage","adminPage","historyPage"].forEach(function(id){
+    document.getElementById(id).classList.add("hidden");
   });
 
-  found++;
- });
+  document.getElementById(pageId).classList.remove("hidden");
 
- if (found === 0) {
-  alert("பொருளை அடையாளம் காண முடியவில்லை. மீண்டும் தெளிவாகச் சொல்லுங்கள்.");
- }
+  document.querySelectorAll("nav button").forEach(function(btn){
+    btn.classList.remove("active");
+  });
 
- renderBill();
+  button.classList.add("active");
+
+  if(pageId === "adminPage") renderProducts();
+  if(pageId === "historyPage") renderHistory();
 }
 
-// வாடிக்கையாளர் கொடுத்த பணத்தை குரலில் பெறுதல்
-function startPaymentVoice() {
- const Speech =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
+/* பொருள் பட்டியல் */
+function renderManualProducts(){
+  const select = document.getElementById("manualProduct");
+  select.innerHTML = "";
 
- if (!Speech) {
-  alert("Chrome உலாவியில் திறந்து முயற்சி செய்யுங்கள்");
-  return;
- }
+  products.forEach(function(p,index){
+    const option = document.createElement("option");
+    option.value = index;
+    option.textContent = p.name + " - ₹" + p.price +
+      (p.type === "kg" ? "/கிலோ" : "/எண்ணிக்கை");
+    select.appendChild(option);
+  });
+}
 
- const recognition = new Speech();
- recognition.lang = "ta-IN";
+function renderProducts(){
+  const list = document.getElementById("productList");
+  list.innerHTML = "";
 
- recognition.onresult = function(event) {
-  const spoken = event.results[0][0].transcript;
-  const number = spoken.match(/[0-9]+/);
-
-  if (number) {
-   document.getElementById("paidInput").value = number[0];
-   calculateChange();
-  } else {
-   alert("தொகையை எண்களில் சொல்லிப் பாருங்கள்");
+  if(products.length === 0){
+    list.textContent = "பொருட்கள் இல்லை.";
+    return;
   }
- };
 
- recognition.start();
+  products.forEach(function(p,index){
+    const div = document.createElement("div");
+    div.className = "item";
+
+    const line = document.createElement("div");
+    line.className = "itemline";
+
+    const info = document.createElement("div");
+    info.innerHTML =
+      "<span class='itemname'></span><br><span class='muted'></span>";
+
+    info.querySelector(".itemname").textContent = p.name;
+    info.querySelector(".muted").textContent =
+      "₹" + p.price + (p.type === "kg" ? " / கிலோ" : " / ஒன்று");
+
+    const actions = document.createElement("div");
+    actions.className = "row";
+
+    const edit = document.createElement("button");
+    edit.className = "small blue";
+    edit.textContent = "திருத்து";
+    edit.onclick = function(){editProduct(index);};
+
+    const del = document.createElement("button");
+    del.className = "small danger";
+    del.textContent = "நீக்கு";
+    del.onclick = function(){deleteProduct(index);};
+
+    actions.append(edit,del);
+    line.append(info,actions);
+    div.appendChild(line);
+    list.appendChild(div);
+  });
 }
 
-   </script>
-   அ<script>
+/* புதிய பொருள் / விலை சேமிப்பு */
+function saveProduct(){
+  const name = document.getElementById("pName").value.trim();
+  const type = document.getElementById("pType").value;
+  const price = Number(document.getElementById("pPrice").value);
+  const editId = document.getElementById("editId").value;
 
-// பில் கணக்கிடுதல்
-function renderBill() {
- const area = document.getElementById("billItems");
- area.innerHTML = "";
+  if(!name){
+    alert("பொருளின் பெயரை உள்ளிடவும்.");
+    return;
+  }
 
- let total = 0;
+  if(!Number.isFinite(price) || price <= 0){
+    alert("சரியான விலையை உள்ளிடவும்.");
+    return;
+  }
 
- bill.forEach(function(item, index) {
-  let amount = item.type === "kg"
-   ? item.price * item.qty
-   : item.price * item.qty;
+  const duplicate = products.some(function(p,i){
+    return p.name === name && String(i) !== editId;
+  });
 
-  total += amount;
+  if(duplicate){
+    alert("இந்தப் பொருள் ஏற்கெனவே உள்ளது.");
+    return;
+  }
 
-  const row = document.createElement("div");
-  row.className = "billrow";
+  if(editId !== ""){
+    products[Number(editId)] = {name,type,price};
+  }else{
+    products.push({name,type,price});
+  }
 
-  row.innerHTML =
-   "<span>" + item.name + " - " +
-   item.qty + (item.type === "kg" ? " கிலோ" : " எண்ணிக்கை") +
-   " × ₹" + item.price + " = ₹" + amount + "</span>" +
-   '<button onclick="removeBillItem(' + index + ')">நீக்கு</button>';
-
-  area.appendChild(row);
- });
-
- document.getElementById("total").innerText =
-  "₹" + total.toFixed(2);
-
- calculateChange();
+  saveProducts();
+  renderProducts();
+  renderManualProducts();
+  clearProductForm();
+  alert("பொருள் விலை சேமிக்கப்பட்டது.");
 }
 
-// பில்லில் உள்ள ஒரு பொருளை நீக்குதல்
-function removeBillItem(index) {
- bill.splice(index, 1);
- renderBill();
+function editProduct(index){
+  const p = products[index];
+
+  document.getElementById("pName").value = p.name;
+  document.getElementById("pType").value = p.type;
+  document.getElementById("pPrice").value = p.price;
+  document.getElementById("editId").value = index;
+
+  window.scrollTo({top:0,behavior:"smooth"});
 }
 
-// மொத்தத் தொகை
-function getBillTotal() {
- return bill.reduce(function(sum, item) {
-  return sum + item.price * item.qty;
- }, 0);
+function deleteProduct(index){
+  if(!confirm(products[index].name + " நீக்க வேண்டுமா?")) return;
+
+  products.splice(index,1);
+  saveProducts();
+  renderProducts();
+  renderManualProducts();
 }
 
-// மீதித் தொகை கணக்கிடுதல்
-function calculateChange() {
- const total = getBillTotal();
- const paid = Number(document.getElementById("paidInput").value) || 0;
-
- const change = paid - total;
-
- document.getElementById("changeLabel").innerText =
-  change >= 0 ? "வாடிக்கையாளருக்கு மீதி" : "இன்னும் கொடுக்க வேண்டியது";
-
- document.getElementById("changeAmount").innerText =
-  "₹" + Math.abs(change).toFixed(2);
-
- document.getElementById("paymentStatus").innerText =
-  paid >= total ? "பணம் சரியாக உள்ளது" : "பணம் இன்னும் குறைவாக உள்ளது";
+function clearProductForm(){
+  document.getElementById("pName").value = "";
+  document.getElementById("pPrice").value = "";
+  document.getElementById("pType").value = "kg";
+  document.getElementById("editId").value = "";
 }
 
-// தற்போதைய பில்லை ரத்து செய்தல்
-function cancelCurrentBill() {
- if (bill.length === 0) {
-  alert("ரத்து செய்ய பில் எதுவும் இல்லை");
-  return;
- }
-
- if (!confirm("இந்த பில்லை ரத்து செய்ய வேண்டுமா?")) return;
-
- bill = [];
- document.getElementById("paidInput").value = "";
- document.getElementById("paymentStatus").innerText = "";
- document.getElementById("changeAmount").innerText = "₹0";
- document.getElementById("changeLabel").innerText = "மீதித் தொகை";
-
- renderBill();
+/* கைமுறையாக பில் சேர்த்தல் */
+function setManualQty(qty){
+  document.getElementById("manualQty").value = qty;
 }
 
-// பில்லை முடித்து சேமித்தல்
-function finishBill() {
- if (bill.length === 0) {
-  alert("முதலில் பொருட்களைச் சேர்க்கவும்");
-  return;
- }
+function addManual(){
+  if(products.length === 0){
+    alert("முதலில் பொருட்களைச் சேர்க்கவும்.");
+    return;
+  }
 
- const total = getBillTotal();
- const paid = Number(document.getElementById("paidInput").value) || 0;
+  const index = Number(document.getElementById("manualProduct").value);
+  const qty = Number(document.getElementById("manualQty").value);
+  const p = products[index];
 
- if (paid < total) {
-  alert("வாடிக்கையாளர் கொடுத்த தொகை பில் தொகையை விடக் குறைவாக உள்ளது");
-  return;
- }
+  if(!p || !Number.isFinite(qty) || qty <= 0){
+    alert("சரியான பொருள் மற்றும் அளவைத் தேர்வு செய்யவும்.");
+    return;
+  }
 
- history.push({
-  date: new Date().toLocaleString("ta-IN"),
-  items: bill,
-  total: total,
-  paid: paid,
-  change: paid - total
- });
-
- localStorage.setItem("vk_history", JSON.stringify(history));
-
- alert(
-  "பில் முடிந்தது!\nமொத்தம்: ₹" + total +
-  "\nகொடுத்தது: ₹" + paid +
-  "\nமீதி: ₹" + (paid - total)
- );
-
- bill = [];
- document.getElementById("paidInput").value = "";
- document.getElementById("paymentStatus").innerText = "";
- document.getElementById("changeAmount").innerText = "₹0";
- renderBill();
+  addBillItem(p,qty);
+  document.getElementById("manualQty").value = 1;
 }
 
-document.getElementById("paidInput").addEventListener("input", calculateChange);
+function addBillItem(product,qty){
+  bill.push({
+    name:product.name,
+    type:product.type,
+    qty:qty,
+    price:Number(product.price)
+  });
 
-   </script>
-   <script>
+  renderBill();
+}
 
-// ஏற்கனவே சேமித்த பில் வரலாற்றைப் பெறுதல்
-history = JSON.parse(localStorage.getItem("vk_history")) || [];
+/* தமிழ் குரல் அளவு புரிதல் */
+function getTamilQuantity(text,type){
+  const words = text.replace(/\s+/g," ").trim();
 
-// பில் வரலாற்றைக் காட்டுதல்
-function renderHistory() {
- const area = document.getElementById("historyList");
- area.innerHTML = "";
+  if(type === "piece"){
+    if(/ஐந்து|அஞ்சு|அஞ்ச|5/.test(words)) return 5;
+    if(/நான்கு|நாலு|4/.test(words)) return 4;
+    if(/மூன்று|மூணு|3/.test(words)) return 3;
+    if(/இரண்டு|ரெண்டு|2/.test(words)) return 2;
+    return 1;
+  }
 
- if (history.length === 0) {
-  area.innerHTML = "<p>இதுவரை பில்கள் எதுவும் இல்லை.</p>";
-  return;
- }
+  if(/முக்கால்|முக்கா/.test(words)) return 0.75;
+  if(/அரை|பாதி|அரைகிலோ/.test(words)) return 0.5;
+  if(/கால்|கால்கிலோ/.test(words)) return 0.25;
+  if(/ஒன்றரை/.test(words)) return 1.5;
+  if(/ஒன்றேகால்/.test(words)) return 1.25;
+  if(/ஒன்றேமுக்கால்/.test(words)) return 1.75;
 
- history.forEach(function(item, index) {
-  const row = document.createElement("div");
-  row.className = "historyrow";
+  if(/ஐந்து|அஞ்சு|5/.test(words)) return 5;
+  if(/நான்கு|நாலு|4/.test(words)) return 4;
+  if(/மூன்று|மூணு|3/.test(words)) return 3;
+  if(/இரண்டு|ரெண்டு|2/.test(words)) return 2;
 
-  const heading = document.createElement("p");
-  heading.textContent =
-   item.date + " | மொத்தம்: ₹" + item.total.toFixed(2);
+  return 1;
+}
 
-  const details = document.createElement("p");
-  details.textContent =
-   "கொடுத்தது: ₹" + item.paid +
-   " | மீதி: ₹" + item.change.toFixed(2);
+/* பல பொருட்களை ஒரே குரலில் சேர்த்தல் */
+function addSpokenProducts(spoken){
+  const text = spoken.replace(/\s+/g," ").trim();
+  const matches = [];
 
-  const deleteButton = document.createElement("button");
-  deleteButton.textContent = "இந்தப் பில்லை நீக்கு";
-  deleteButton.onclick = function() {
-   deleteHistory(index);
+  products.forEach(function(p){
+    let start = 0;
+
+    while(true){
+      const position = text.indexOf(p.name,start);
+      if(position === -1) break;
+
+      matches.push({
+        product:p,
+        start:position,
+        end:position + p.name.length
+      });
+
+      start = position + p.name.length;
+    }
+  });
+
+  matches.sort(function(a,b){return a.start-b.start;});
+
+  if(matches.length === 0){
+    alert("பொருளை அடையாளம் காண முடியவில்லை. பொருளின் பெயரைத் தெளிவாகச் சொல்லுங்கள்.");
+    return;
+  }
+
+  let added = 0;
+
+  matches.forEach(function(match,index){
+    const previousEnd = index === 0 ? 0 : matches[index-1].end;
+    const before = text.substring(previousEnd,match.start);
+
+    const qty = getTamilQuantity(before,match.product.type);
+    addBillItem(match.product,qty);
+    added++;
+  });
+
+  if(added > 0){
+    document.getElementById("voiceStatus").textContent =
+      added + " பொருள் பில்லில் சேர்க்கப்பட்டது.";
+  }
+}
+
+/* தமிழ் குரல் வசதி */
+function startProductVoice(){
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if(!SpeechRecognition){
+    alert("இந்த வசதியை Chrome உலாவியில் திறந்து முயற்சிக்கவும்.");
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+  recognition.lang = "ta-IN";
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  document.getElementById("voiceStatus").textContent = "கேட்டுக்கொண்டிருக்கிறது...";
+
+  recognition.onresult = function(event){
+    const spoken = event.results[0][0].transcript;
+
+    document.getElementById("voiceText").textContent = spoken;
+    addSpokenProducts(spoken);
   };
 
-  row.appendChild(heading);
-  row.appendChild(details);
-  row.appendChild(deleteButton);
-  area.appendChild(row);
- });
-}
-
-// பழைய பில்லை நீக்குதல்
-function deleteHistory(index) {
- if (!confirm("இந்தப் பில் வரலாற்றை நீக்க வேண்டுமா?")) return;
-
- history.splice(index, 1);
- localStorage.setItem("vk_history", JSON.stringify(history));
- renderHistory();
-}
-
-// பெரிய எழுத்து அமைப்பை மீட்டெடுத்தல்
-if (localStorage.getItem("vk_large_text") === "yes") {
- document.body.classList.add("big-text");
-}
-
-// செயலியைத் தொடங்கும்போது பட்டியல்களைக் காட்டுதல்
-renderProducts();
-renderManualProducts();
-renderBill();
-renderHistory();
-</script>
-
-<script>
-function downloadBackup() {
-  const backup = {
-    products: JSON.parse(localStorage.getItem("vk_products") || "[]"),
-    history: JSON.parse(localStorage.getItem("vk_history") || "[]"),
-    largeText: localStorage.getItem("vk_large_text")
+  recognition.onerror = function(event){
+    document.getElementById("voiceStatus").textContent =
+      "குரல் பிழை: " + event.error;
   };
 
-  const file = new Blob(
-    [JSON.stringify(backup, null, 2)],
-    {type: "application/json"}
-  );
+  recognition.onend = function(){
+    if(document.getElementById("voiceStatus").textContent === "கேட்டுக்கொண்டிருக்கிறது..."){
+      document.getElementById("voiceStatus").textContent = "மீண்டும் பேசலாம்.";
+    }
+  };
 
-  const url = URL.createObjectURL(file);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "VOICE_KANAKKU_BACKUP.json";
-  link.click();
-
-  URL.revokeObjectURL(url);
-  alert("Backup பதிவிறக்கம் செய்யப்பட்டது!");
+  recognition.start();
 }
-</script>
 
-</body>
-</html>
+/* பில் கணக்கு */
+function getBillTotal(){
+  return bill.reduce(function(total,item){
+    return total + item.qty * item.price;
+  },0);
+}
+
+function renderBill(){
+  const container = document.getElementById("billItems");
+  container.innerHTML = "";
+
+  if(bill.length === 0){
+    container.innerHTML = "<p class='muted'>இன்னும் பொருட்கள் சேர்க்கப்படவில்லை.</p>";
+  }
+
+  bill.forEach(function(item,index){
+    const div = document.createElement("div");
+    div.className = "item";
+
+    const line = document.createElement("div");
+    line.className = "itemline";
+
+    const info = document.createElement("div");
+    const amount = item.qty * item.price;
+
+    const name = document.createElement("div");
+    name.className = "itemname";
+    name.textContent = item.name;
+
+    const details = document.createElement("div");
+    details.className = "muted";
+    details.textContent =
+      item.qty + (item.type === "kg" ? " கிலோ" : " எண்ணிக்கை") +
+      " × ₹" + item.price;
+
+    const price = document.createElement("div");
+    price.className = "price";
+    price.textContent = "₹" + amount.toFixed(2);
+
+    const remove = document.createElement("button");
+    remove.className = "small danger";
+    remove.textContent = "நீக்கு";
+    remove.onclick = function(){removeBillItem(index);};
+
+    info.append(name,details);
+    line.append(info,price,remove);
+    div.appendChild(line);
+    container.appendChild(div);
+  });
+
+  document.getElementById("total").textContent =
+    "₹" + getBillTotal().toFixed(2);
+
+  calculateChange();
+}
+
+function removeBillItem(index){
+  bill.splice(index,1);
+  renderBill();
+}
+
+function calculateChange(){
+  const total = getBillTotal();
+  const paid = Number(document.getElementById("paidInput").value) || 0;
+  const difference = paid - total;
+
+  if(difference >= 0){
+    document.getElementById("changeLabel").textContent = "மீதி கொடுக்க வேண்டிய தொகை";
+    document.getElementById("changeAmount").textContent =
+      "₹" + difference.toFixed(2);
+  }else{
+    document.getElementById("changeLabel").textContent = "இன்னும் கொடுக்க வேண்டிய தொகை";
+    document.getElementById("changeAmount").textContent =
+      "₹" + Math.abs(difference).toFixed(2);
+  }
+}
+
+/* பணம் குரல் மூலம் உள்ளிடுதல் */
+function startPaymentVoice(){
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if(!SpeechRecognition){
+    alert("Chrome உலாவியில் முயற்சிக்கவும்.");
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+  recognition.lang = "ta-IN";
+  recognition.continuous = false;
+
+  document.getElementById("paymentStatus").textContent =
+    "பணம் கேட்கிறது...";
+
+  recognition.onresult = function(event){
+    const spoken = event.results[0][0].transcript;
+    const digits = spoken.match(/[0-9]+(?:\.[0-9]+)?/);
+
+    if(digits){
+      document.getElementById("paidInput").value = digits[0];
+      calculateChange();
+      document.getElementById("paymentStatus").textContent =
+        "கொடுத்த பணம்: ₹" + digits[0];
+    }else{
+      document.getElementById("paymentStatus").textContent =
+        "எண்ணை இலக்கங்களாக உள்ளிடவும்.";
+    }
+  };
+
+  recognition.onerror = function(){
+    document.getElementById("paymentStatus").textContent =
+      "மீண்டும் முயற்சிக்கவும்.";
+  };
+
+  recognition.start();
+}
+
+/* பிரிண்ட் ரசீது */
+function printBill(){
+  if(bill.length === 0){
+    alert("முதலில் பொருட்களைச் சேர்க்கவும்.");
+    return;
+  }
+
+  const total = getBillTotal();
+  const paid = Number(docu
