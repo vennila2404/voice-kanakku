@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>சுதா காய்கறி கடை</title>
 
 <style>
@@ -19,112 +20,180 @@ body {
   font-size: 16px;
 }
 
-button, input, select, textarea {
+button, input, select {
   font: inherit;
 }
 
 button {
   border: none;
   border-radius: 10px;
-  padding: 12px 16px;
+  padding: 12px;
   cursor: pointer;
+  font-weight: bold;
 }
 
 .app-header {
   background: #16834a;
   color: white;
-  padding: 18px 12px;
+  padding: 15px 10px;
   border-radius: 16px;
   text-align: center;
   margin-bottom: 14px;
 }
 
 .logo {
-  font-size: 42px;
-  margin-bottom: 5px;
+  font-size: 38px;
 }
 
 .app-header h1 {
-  font-size: 25px;
-  margin: 5px 0;
+  font-size: 24px;
+  margin: 5px;
 }
 
 .app-header p {
-  margin: 5px 0 0;
-  font-size: 14px;
+  margin: 5px;
+  font-size: 13px;
 }
 
 .top-controls {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   gap: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .top-controls button {
   background: white;
   color: #176b3d;
   border: 1px solid #c8dfce;
-  font-weight: bold;
 }
 
 .card {
   background: white;
-  padding: 16px;
+  padding: 14px;
   margin-bottom: 14px;
   border-radius: 14px;
   box-shadow: 0 2px 7px #00000010;
 }
 
 .card h2 {
-  font-size: 19px;
-  margin: 0 0 14px;
+  font-size: 18px;
   color: #176b3d;
+  margin: 0 0 12px;
 }
 
 .voice-button {
-  display: block;
   width: 100%;
   background: #7542b8;
   color: white;
   font-size: 19px;
-  font-weight: bold;
-  padding: 17px;
-  border-radius: 14px;
-}
-
-.voice-button:active {
-  opacity: 0.8;
+  padding: 16px;
 }
 
 .voice-status {
   text-align: center;
   color: #526457;
-  margin: 12px 0;
   font-size: 14px;
 }
 
 .voice-text {
   width: 100%;
-  min-height: 75px;
-  padding: 12px;
+  min-height: 65px;
+  padding: 10px;
   border: 1px solid #cbd9ce;
   border-radius: 10px;
   background: #f8fbf8;
-  resize: vertical;
 }
 
 .help-text {
-  font-size: 13px;
   color: #657468;
+  font-size: 13px;
   line-height: 1.7;
 }
 
-.section-title {
-  color: #176b3d;
+.bill-item {
+  border-bottom: 1px solid #e3eae4;
+  padding: 12px 0;
+}
+
+.bill-item:last-child {
+  border-bottom: none;
+}
+
+.bill-item-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+}
+
+.delete-button {
+  background: #ffe9e9;
+  color: #c62828;
+  padding: 8px 12px;
+}
+
+.total-box {
+  background: #e7f5e9;
+  border: 1px solid #b8dfc0;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+}
+
+.amount {
+  color: #16834a;
+  font-size: 29px;
   font-weight: bold;
+}
+
+.payment-button {
+  width: 100%;
+  background: #16834a;
+  color: white;
+}
+
+.payment-box {
+  background: #f8fbf8;
+  border: 1px solid #cbd9ce;
+  padding: 12px;
+  border-radius: 12px;
+  margin-top: 10px;
+}
+
+.money-input {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #cbd9ce;
+  border-radius: 9px;
+  margin-top: 8px;
+}
+
+.change-box {
+  background: #e9f3ff;
+  border: 1px solid #b8d5f5;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+}
+
+.print-button {
+  width: 100%;
+  background: #2368a8;
+  color: white;
   font-size: 17px;
+}
+
+.finish-button {
+  width: 100%;
+  background: #16834a;
+  color: white;
+  font-size: 17px;
+}
+
+.small-note {
+  font-size: 12px;
+  color: #657468;
 }
 
 .hidden {
@@ -141,14 +210,14 @@ button {
 
 <body>
 
-<!-- முகப்புப் பக்கம் -->
+<!-- முதல் பக்கம்: பில்லிங் -->
 
 <main id="homePage">
 
   <header class="app-header">
     <div class="logo">🧺🥕🍅</div>
     <h1>சுதா காய்கறி கடை</h1>
-    <p>குரல் மூலம் எளிய பில்லிங்</p>
+    <p>VOICE KANAKKU</p>
   </header>
 
   <div class="top-controls">
@@ -161,10 +230,11 @@ button {
     </button>
   </div>
 
-  <!-- குரல் மூலம் பொருட்களைச் சேர்க்கும் பகுதி -->
+  <!-- குரல் மூலம் காய்கறி சேர்க்க -->
 
   <section class="card">
-    <h2>🎙️ குரல் மூலம் காய்கறிகளைச் சேர்க்க</h2>
+
+    <h2>🎙️ குரல் மூலம் காய்கறி சேர்க்க</h2>
 
     <button
       class="voice-button"
@@ -177,20 +247,138 @@ button {
       பேசத் தயாராக உள்ளது
     </p>
 
-    <p class="section-title">நீங்கள் பேசியது:</p>
-
     <textarea
       id="voiceText"
       class="voice-text"
-      placeholder="நீங்கள் பேசுவது இங்கே வரும்..."
+      placeholder="நீங்கள் பேசியது இங்கே வரும்..."
     ></textarea>
 
     <p class="help-text">
       உதாரணம்: அரை கிலோ தக்காளி 60,
       ஒரு கிலோ கேரட் 80.
-      கால் கிலோ, அரை கிலோ, முக்கால் கிலோ,
-      ஒரு கிலோ என்று பேசலாம்.
+      விலையும் அளவும் சேர்த்துப் பேசுங்கள்.
     </p>
+
   </section>
+
+  <!-- பில் பொருட்கள் -->
+
+  <section class="card">
+
+    <h2>🛒 பில்லில் சேர்க்கப்பட்ட காய்கறிகள்</h2>
+
+    <div id="billItems">
+
+      <p class="small-note">
+        இன்னும் காய்கறிகள் சேர்க்கப்படவில்லை.
+      </p>
+
+    </div>
+
+  </section>
+
+  <!-- மொத்த தொகை -->
+
+  <section class="card">
+
+    <h2>💰 மொத்த காய்கறித் தொகை</h2>
+
+    <div class="total-box">
+
+      <div class="amount" id="totalAmount">
+        ₹0
+      </div>
+
+      <p class="small-note">
+        அனைத்து காய்கறிகளின் மொத்தப் பணம்
+      </p>
+
+    </div>
+
+  </section>
+
+  <!-- வாடிக்கையாளர் கொடுத்த பணம் -->
+
+  <section class="card">
+
+    <h2>💵 வாடிக்கையாளர் கொடுத்த பணம்</h2>
+
+    <button
+      class="payment-button"
+      onclick="startPaymentVoice()"
+    >
+      🎙️ பணத்தைப் பேசிச் சொல்லுங்கள்
+    </button>
+
+    <div class="payment-box">
+
+      <p id="paymentVoiceStatus" class="small-note">
+        பணத்தைச் சொல்லத் தயாராக உள்ளது.
+      </p>
+
+      <label for="paidAmount">
+        கொடுத்த பணம்
+      </label>
+
+      <input
+        id="paidAmount"
+        class="money-input"
+        type="number"
+        min="0"
+        placeholder="உதாரணம்: 500"
+        oninput="calculateChange()"
+      >
+
+    </div>
+
+  </section>
+
+  <!-- மீதிப் பணம் -->
+
+  <section class="card">
+
+    <h2>🔄 வாடிக்கையாளருக்குத் திருப்பிக் கொடுக்க வேண்டிய மீதம்</h2>
+
+    <div class="change-box">
+
+      <div class="amount" id="changeAmount">
+        ₹0
+      </div>
+
+      <p id="changeStatus" class="small-note">
+        பணம் செலுத்தப்பட்ட பிறகு மீதம் கணக்கிடப்படும்.
+      </p>
+
+    </div>
+
+  </section>
+
+  <!-- பிரிண்ட் -->
+
+  <section class="card">
+
+    <button
+      class="print-button"
+      onclick="printBill()"
+    >
+      🖨️ பில் பிரிண்ட்
+    </button>
+
+  </section>
+
+  <!-- புதிய பில் -->
+
+  <section class="card">
+
+    <button
+      class="finish-button"
+      onclick="finishBill()"
+    >
+      ✅ பில் முடிந்தது – புதிய பில்
+    </button>
+
+  </section>
+
+</main>
 
 <!-- பகுதி 2 இங்கே தொடரும் -->
